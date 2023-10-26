@@ -1,0 +1,40 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit(taskForm)" #taskForm="ngForm">
+    <div class="form-group">
+      <label for="task">Task</label>
+      <input type="text" class="form-control" name="task" id="task" placeholder="Enter the Task" ngModel required>
+      <small id="errorMsg" *ngIf="taskForm.invalid && taskForm.dirty" class= "text-danger">required field</small>
+    </div>
+   
+    <button [disabled]="taskForm.invalid" type="submit" class="btn btn-primary m-3">Submit</button>
+  </form>
+
+  <div class="row" *ngIf="taskArray.length!==0">
+    <hr>
+  <table class="bg-dark text-white" >
+    <thead>
+      <tr>
+        <th scope="col">Tasks</th>
+        <th scope="col">Status</th>
+        <th scope="col">Delete</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of taskArray; index as i">
+        <td [style.textDecoration]="t.status ? 'line-through' : 'none'">{{ t.taskName }}</td>
+        <div *ngIf="t.status; then doneBlock else pendingBlock"></div>
+        <ng-template #pendingBlock>
+          <td><button class="btn btn-success btn-sm" (click)="onComplete(i)">Done</button></td>
+        </ng-template>
+        <ng-template #doneBlock>
+          <td class="text-success badge badge-success m-2">completed</td>
+        </ng-template>
+        <td><button class="btn btn-danger btn-sm" (click)="onDelete(i)">Delete</button></td>
+      </tr>
+    </tbody>
+    
+  </table>
+  </div>
+</div>
+
